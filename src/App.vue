@@ -1,30 +1,59 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { onMounted, ref } from "vue";
+import { useAchievementsStore } from "./stores/achievements";
+import Filter from "./components/Achievements/Filter.vue";
+import Sidebar from "./components/Achievements/Sidebar.vue";
+import Achievements from "./components/Achievements/Achievements.vue";
+
+const achievStore = useAchievementsStore();
+
+onMounted(() => {
+  achievStore.init();
+});
+
+const filter = ref<"arwy" | "japyx" | "nobody" | "all">("all");
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div class="container">
+    <div :class="{ sidebar: true }"><Sidebar /></div>
+    <div :class="{ filter: true }">
+      <Filter @filter="filter = $event" :currentFilter="filter" />
+    </div>
+    <div :class="{ main: true }">
+      <Achievements :class="{ achievements: true }" :filter="filter" />
+    </div>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.container {
+  display: grid;
+  grid-template-columns: 20% 1fr;
+  grid-template-rows: max-content 1fr;
+  gap: 0;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "sidebar filter"
+    "sidebar main";
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+
+.sidebar {
+  grid-area: sidebar;
+  overflow: hidden;
+  height: 100%;
 }
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+
+.filter {
+  grid-area: filter;
+}
+
+.main {
+  grid-area: main;
+  overflow: hidden;
+  height: 100%;
 }
 </style>
