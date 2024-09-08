@@ -1,74 +1,46 @@
+import {
+  AchievementAttributes,
+  GroupAttributes,
+  UserAttributes,
+} from "../../utils/type";
 import { acceptHMRUpdate, defineStore } from "pinia";
 
 import _apiAchievements from "../jsonData/achiev.json";
 import _apiArwy from "../jsonData/arwyAchiev.json";
-import _categories from "../jsonData/categories.json";
 import _apiJapyx from "../jsonData/japyxAchiev.json";
-
-type Categorie = {
-  id: number;
-  name: string;
-  description: string;
-  order: number;
-  icon: string;
-  achievements: number[];
-};
-
-const apiAchievements = _apiAchievements as {
-  id: number;
-  name: string;
-  description: string;
-  requirement: string;
-}[];
-
-const arwyAchiev = _apiArwy as {
-  id: number;
-  done: boolean;
-  unlocked: boolean;
-}[];
-
-const japyxAchiev = _apiJapyx as {
-  id: number;
-  done: boolean;
-  unlocked: boolean;
-}[];
-
-const categories = _categories as Categorie[];
 
 export const useAchievementsStore = defineStore({
   id: "achievements",
   state: () => ({
-    list: [] as { id: number; name: string; description: string }[],
-    categories: categories.filter(
-      ({ achievements }) => achievements.length > 0
-    ),
-    arwyDone: [] as number[],
-    japyxDone: [] as number[],
+    groups: [] as GroupAttributes[],
+    achievements: [] as AchievementAttributes[],
+    users: [] as UserAttributes[],
   }),
 
-  getters: {
-    listWithUserDone: (state) => {
-      return state.list.map((item) => {
-        return {
-          ...item,
-          arwyDone: state.arwyDone.includes(item.id),
-          japyxDone: state.japyxDone.includes(item.id),
-        };
-      });
-    },
-  },
+  getters: {},
 
   actions: {
-    init() {
-      this.list = apiAchievements.map((item) => ({
-        id: item.id,
-        name: item.name,
-        description: [item.description, item.requirement].join("\n"),
-      }));
-      this.arwyDone = arwyAchiev.filter(({ done }) => done).map(({ id }) => id);
-      this.japyxDone = japyxAchiev
-        .filter(({ done }) => done)
-        .map(({ id }) => id);
+    async init() {
+      this.groups = await fetch("/api/groups").then((res) => res.json());
+      this.users = await fetch("/api/users").then((res) => res.json());
+    },
+    async getAchievements(idGroup: string, idCategory: number) {
+      const groups = this.groups.map((group) =>
+        group.id === idGroup
+          ? {
+              ...group,
+              categories: group.categories?.map((category) => ({
+                ...category,
+                selected: category.id === idCategory,
+              })),
+            }
+          : group
+      );
+      this.groups = groups;
+
+      this.achievements = await fetch(
+        "/api/achievements?category=" + idCategory
+      ).then((res) => res.json());
     },
   },
 });

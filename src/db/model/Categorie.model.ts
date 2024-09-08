@@ -34,7 +34,7 @@ Categorie.init(
       },
     },
   },
-  { sequelize }
+  { sequelize, name: { singular: "categorie", plural: "categories" } }
 );
 
 export default Categorie;

@@ -32,7 +32,7 @@ Achievement.init(
       },
     },
   },
-  { sequelize }
+  { sequelize, name: { singular: "achievement", plural: "achievements" } }
 );
 
 export default Achievement;

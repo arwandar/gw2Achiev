@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { useAchievementsStore } from "../../stores/achievements";
+
+const achievStore = useAchievementsStore();
+
 defineProps<{
-  currentFilter: "all" | "arwy" | "japyx" | "nobody";
+  currentFilter: string;
 }>();
 </script>
 
@@ -13,16 +17,12 @@ defineProps<{
       All
     </button>
     <button
-      @click="$emit('filter', 'arwy')"
-      :class="{ active: currentFilter == 'arwy' }"
+      v-for="user in achievStore.users"
+      :key="user.name"
+      @click="$emit('filter', user.name)"
+      :class="{ active: currentFilter == user.name }"
     >
-      ARWY
-    </button>
-    <button
-      @click="$emit('filter', 'japyx')"
-      :class="{ active: currentFilter == 'japyx' }"
-    >
-      JAPYX
+      {{ user.name }}
     </button>
     <button
       @click="$emit('filter', 'nobody')"

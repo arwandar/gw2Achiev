@@ -66,7 +66,10 @@ UserAchievement.init(
       allowNull: true,
     },
   },
-  { sequelize }
+  {
+    sequelize,
+    name: { singular: "userAchievement", plural: "userAchievements" },
+  }
 );
 
 export default UserAchievement;

@@ -23,7 +23,7 @@ Group.init(
     description: DataTypes.STRING,
     order: DataTypes.INTEGER,
   },
-  { sequelize }
+  { sequelize, name: { singular: "group", plural: "groups" } }
 );
 
 export default Group;

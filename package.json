@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon -r dotenv/config -w src/server -x tsx src/back/main.ts",
+    "dev": "nodemon -r dotenv/config -w src/back -w src/utils -w src/db  -x tsx src/back/main.ts",
     "build": "vue-tsc -b && vite build",
     "start": "NODE_ENV=production tsx src/server/main.ts",
     "cron": "nodemon -r dotenv/config -w src/cron -w src/db -w src/utils -x tsx  src/cron/index.ts "

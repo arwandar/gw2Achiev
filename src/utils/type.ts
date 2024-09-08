@@ -17,6 +17,7 @@ export interface AchievementAttributes {
   description: string;
   requirement: string;
   categorieId?: number;
+  userAchievements?: UserAchievementAttributes[];
 }
 export interface AchievementInput {}
 export interface AchievementOuput extends Required<AchievementAttributes> {}
@@ -41,6 +42,7 @@ export interface CategorieAttributes {
   order: number;
   icon: string;
   groupId?: string;
+  selected?: boolean;
 }
 export interface CategorieInput {}
 export interface CategorieOuput extends Required<CategorieAttributes> {}
@@ -62,6 +64,8 @@ export interface GroupAttributes {
   name: string;
   description: string;
   order: number;
+  categories?: CategorieAttributes[];
+  opened?: boolean;
 }
 export interface GroupInput {}
 export interface GroupOuput extends Required<GroupAttributes> {}

@@ -5,25 +5,22 @@ import { useAchievementsStore } from "../../stores/achievements";
 const achievStore = useAchievementsStore();
 
 const props = defineProps<{
-  filter: "all" | "arwy" | "japyx" | "nobody";
+  filter: string;
 }>();
 
 const list = computed(() => {
-  let tmpList = [...achievStore.listWithUserDone];
-  switch (props.filter) {
-    case "arwy":
-      tmpList = achievStore.listWithUserDone.filter((item) => item.arwyDone);
-      break;
-    case "japyx":
-      tmpList = achievStore.listWithUserDone.filter((item) => item.japyxDone);
-      break;
-    case "nobody":
-      tmpList = achievStore.listWithUserDone.filter(
-        (item) => !item.arwyDone && !item.japyxDone
-      );
-      break;
-  }
-  return tmpList;
+  let localList = [...achievStore.achievements];
+  if (props.filter === "nobody")
+    return localList.filter((ach) =>
+      ach.userAchievements?.every((userAch) => !userAch.done)
+    );
+  if (props.filter === "all") return localList;
+  const userName = props.filter;
+  return localList.filter((ach) =>
+    ach.userAchievements?.every((userAch) =>
+      userAch.userName === userName ? userAch.done : !userAch.done
+    )
+  );
 });
 </script>
 
@@ -34,8 +31,8 @@ const list = computed(() => {
       :key="achievement.id"
       :class="{
         cell: true,
-        arwy: achievement.arwyDone,
-        japyx: achievement.japyxDone,
+        // arwy: achievement.arwyDone,
+        // japyx: achievement.japyxDone,
       }"
       :title="achievement.description"
     >
