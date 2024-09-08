@@ -2,11 +2,12 @@ import {
   AchievementApi,
   CategorieApi,
   CategorieInput,
-  CategorieOuput,
+  GroupApi,
 } from "../../utils/type";
 
 import Achievement from "../model/Achievement.model";
 import Categorie from "../model/Categorie.model";
+import Group from "../model/Group.model";
 import User from "../model/User.model";
 import UserAchievement from "../model/UserAchievement.model";
 import sequelize from "../sequelize";
@@ -39,7 +40,7 @@ export const addAchievement = async (api: AchievementApi) => {
     description: api.description,
     requirement: api.requirement,
   };
-  return Achievement.create(curatedAchievement);
+  return Achievement.upsert(curatedAchievement);
 };
 
 export const addCategorie = async (api: CategorieApi) => {
@@ -50,12 +51,29 @@ export const addCategorie = async (api: CategorieApi) => {
     order: api.order,
     icon: api.icon,
   };
-  const cat: CategorieOuput = await Categorie.create(curatedCategorie);
+  await Categorie.upsert(curatedCategorie);
 
   for (const id of api.achievements) {
     const achievement = await Achievement.findByPk(id);
     if (achievement) {
-      await achievement.update({ categorieId: cat.id });
+      await achievement.update({ categorieId: api.id });
+    }
+  }
+};
+
+export const addGroup = async (api: GroupApi) => {
+  const curatedGroup = {
+    id: api.id,
+    name: api.name,
+    description: api.description,
+    order: api.order,
+  };
+  await Group.upsert(curatedGroup);
+
+  for (const id of api.categories) {
+    const category = await Categorie.findByPk(id);
+    if (category) {
+      await category.update({ groupId: api.id });
     }
   }
 };

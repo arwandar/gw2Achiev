@@ -29,12 +29,12 @@ UserAchievement.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    userId: {
-      type: DataTypes.INTEGER,
+    userName: {
+      type: DataTypes.STRING,
       allowNull: true,
       references: {
         model: User,
-        key: "id",
+        key: "name",
       },
     },
     achievementId: {

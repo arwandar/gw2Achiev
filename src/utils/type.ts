@@ -1,5 +1,9 @@
 import { Optional } from "sequelize";
 
+/**
+ * ACHIEVEMENT
+ */
+
 export type AchievementApi = {
   id: number;
   name: string;
@@ -14,9 +18,12 @@ export interface AchievementAttributes {
   requirement: string;
   categorieId?: number;
 }
-export interface AchievementInput
-  extends Optional<AchievementAttributes, "id"> {}
+export interface AchievementInput {}
 export interface AchievementOuput extends Required<AchievementAttributes> {}
+
+/**
+ * CATEGORIE
+ */
 
 export type CategorieApi = {
   id: number;
@@ -33,20 +40,59 @@ export interface CategorieAttributes {
   description: string;
   order: number;
   icon: string;
+  groupId?: string;
 }
-export interface CategorieInput extends Optional<CategorieAttributes, "id"> {}
+export interface CategorieInput {}
 export interface CategorieOuput extends Required<CategorieAttributes> {}
 
-export interface UserAttributes {
-  id: number;
+/**
+ * GROUP
+ */
+
+export type GroupApi = {
+  id: string;
   name: string;
+  description: string;
+  order: number;
+  categories: number[];
+};
+
+export interface GroupAttributes {
+  id: string;
+  name: string;
+  description: string;
+  order: number;
 }
-export interface UserInput extends Optional<UserAttributes, "id"> {}
+export interface GroupInput {}
+export interface GroupOuput extends Required<GroupAttributes> {}
+
+/**
+ * USER
+ */
+
+export interface UserAttributes {
+  name: string;
+  token: string;
+}
+export interface UserInput {}
 export interface UserOuput extends Required<UserAttributes> {}
+
+/**
+ * USER ACHIEVEMENT
+ */
+
+export type UserAchievementApi = {
+  id: number;
+  done: boolean;
+  unlocked?: boolean;
+  max?: number;
+  current?: number;
+  repeated?: number;
+};
 
 export interface UserAchievementAttributes {
   id: number;
-  userId?: number;
+  userName?: string;
   achievementId?: number;
   done: boolean;
   unlocked?: boolean;

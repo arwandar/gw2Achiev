@@ -1,6 +1,7 @@
 import { CategorieAttributes, CategorieInput } from "../../utils/type";
 import { DataTypes, Model } from "sequelize";
 
+import Group from "./Group.model";
 import sequelize from "../sequelize";
 
 class Categorie
@@ -12,6 +13,7 @@ class Categorie
   declare description: string;
   declare order: number;
   declare icon: string;
+  declare groupId?: string;
 }
 
 Categorie.init(
@@ -24,6 +26,13 @@ Categorie.init(
     description: DataTypes.TEXT,
     order: DataTypes.INTEGER,
     icon: DataTypes.STRING,
+    groupId: {
+      type: DataTypes.STRING,
+      references: {
+        model: Group,
+        key: "id",
+      },
+    },
   },
   { sequelize }
 );
