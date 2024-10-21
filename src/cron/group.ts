@@ -24,9 +24,8 @@ export const updateGroups = async () => {
 };
 
 const getGroups = async (ids: number[]) => {
-  const uri = `https://api.guildwars2.com/v2/achievements/groups?ids=${ids.join(
-    ","
-  )}`;
+  const idsStr = ids.join(",");
+  const uri = `https://api.guildwars2.com/v2/achievements/groups?ids=${idsStr}&lang=fr`;
   const res = await fetch(uri).then((res) => res.json());
   return res;
 };

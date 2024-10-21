@@ -19,7 +19,7 @@ Group.hasMany(Categorie, {
 });
 
 User.hasMany(UserAchievement, {
-  foreignKey: "userId",
+  foreignKey: "userName",
   onDelete: "CASCADE",
 });
 Achievement.hasMany(UserAchievement, {
@@ -28,11 +28,11 @@ Achievement.hasMany(UserAchievement, {
 });
 
 UserAchievement.belongsTo(User, {
-  foreignKey: "userId",
+  foreignKey: "userName",
 });
 UserAchievement.belongsTo(Achievement, {
   foreignKey: "achievementId",
 });
 
 export { default as sequelize } from "./sequelize";
-export { Categorie, Achievement, User, UserAchievement };
+export { Categorie, Achievement, User, UserAchievement, Group };

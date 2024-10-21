@@ -4,7 +4,6 @@ import {
   CategorieInput,
   GroupApi,
 } from "../../utils/type";
-
 import Achievement from "../model/Achievement.model";
 import Categorie from "../model/Categorie.model";
 import Group from "../model/Group.model";
@@ -39,6 +38,7 @@ export const addAchievement = async (api: AchievementApi) => {
     name: api.name,
     description: api.description,
     requirement: api.requirement,
+    raw: JSON.stringify(api),
   };
   return Achievement.upsert(curatedAchievement);
 };

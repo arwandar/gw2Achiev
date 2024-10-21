@@ -21,6 +21,7 @@ defineProps<{
       :key="user.name"
       @click="$emit('filter', user.name)"
       :class="{ active: currentFilter == user.name }"
+      :style="{ color: user.color }"
     >
       {{ user.name }}
     </button>

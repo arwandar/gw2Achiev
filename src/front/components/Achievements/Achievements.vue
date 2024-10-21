@@ -2,6 +2,8 @@
 import { computed } from "vue";
 import { useAchievementsStore } from "../../stores/achievements";
 
+import { AchievementOuput, UserAchievementOuput } from "../../../utils/type";
+
 const achievStore = useAchievementsStore();
 
 const props = defineProps<{
@@ -16,27 +18,59 @@ const list = computed(() => {
     );
   if (props.filter === "all") return localList;
   const userName = props.filter;
-  return localList.filter((ach) =>
-    ach.userAchievements?.every((userAch) =>
-      userAch.userName === userName ? userAch.done : !userAch.done
-    )
+  return localList.filter(
+    (ach) =>
+      ach.userAchievements?.every((userAch) =>
+        userAch.userName === userName ? userAch.done : !userAch.done
+      ) &&
+      ach.userAchievements?.some((userAch) => userAch.userName === userName)
   );
 });
+
+const getColor = (ach: any) => {
+  const userDone = ach.userAchievements?.filter(
+    (userAch: UserAchievementOuput) => userAch.done
+  );
+
+  if (userDone?.length == 0) return "grey";
+  if (userDone?.length == achievStore.users.length) return "black";
+
+  return achievStore.users.find((user) => user.name == userDone[0].userName)
+    ?.color;
+};
+
+const getTitle = (ach: AchievementOuput) => {
+  return [
+    ach.description,
+    ach.userAchievements?.map(
+      (userAch) => `${userAch.userName}: ${userAch.done}`
+    ),
+  ].join("\n");
+};
+
+const getText = (ach: AchievementOuput) => `${ach.id} - ${ach.name}`;
+
+const handleDebug = (ach: AchievementOuput) => {
+  console.log(ach);
+};
 </script>
 
 <template>
   <div :class="{ 'achievements-container': true }">
     <div
       v-for="achievement in list"
+      @click="handleDebug(achievement)"
       :key="achievement.id"
       :class="{
         cell: true,
-        // arwy: achievement.arwyDone,
-        // japyx: achievement.japyxDone,
       }"
-      :title="achievement.description"
+      :title="getTitle(achievement)"
     >
-      <span :class="{ cell__text: true }">{{ achievement.name }}</span>
+      <span
+        :class="{ cell__text: true }"
+        :style="{ color: getColor(achievement) }"
+        >{{ getText(achievement) }}</span
+      >
     </div>
   </div>
 </template>
@@ -58,25 +92,12 @@ const list = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* text-wrap: nowrap; */
 }
+
 .cell__text {
   padding: 0 1em;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-}
-
-.arwy {
-  color: red;
-}
-
-.japyx {
-  color: blue;
-}
-
-.arwy.japyx {
-  color: purple;
 }
 </style>

@@ -1,19 +1,19 @@
 import { DataTypes, Model } from "sequelize";
+
 import {
   UserAchievementAttributes,
   UserAchievementInput,
 } from "../../utils/type";
-
+import sequelize from "../sequelize";
 import Achievement from "./Achievement.model";
 import User from "./User.model";
-import sequelize from "../sequelize";
 
 class UserAchievement
   extends Model<UserAchievementAttributes, UserAchievementInput>
   implements UserAchievementAttributes
 {
   declare id: number;
-  declare userId?: number;
+  declare userName?: string;
   declare achievementId?: number;
   declare done: boolean;
   declare unlocked?: boolean;

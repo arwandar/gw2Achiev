@@ -5,11 +5,11 @@ import { updateGroups } from "./group";
 import { updateUsers } from "./user";
 
 try {
-  // await reinitDB();
-  // await updateAchievs();
-  // await updateCats();
-  // await updateGroups();
-  // await updateUsers();
+  await reinitDB();
+  await updateAchievs();
+  await updateCats();
+  await updateGroups();
+  await updateUsers();
 } catch (error) {
   console.error(error);
 }

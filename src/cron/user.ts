@@ -1,7 +1,7 @@
 import { Achievement, User, UserAchievement } from "../db";
-
-import { getIds } from "./achievement";
 import { truncate } from "../db/utils";
+import { UserAttributes } from "../utils/type";
+import { getIds } from "./achievement";
 
 export const updateUsers = async () => {
   await truncate(["UserAchievement"]);
@@ -18,15 +18,22 @@ export const updateUsers = async () => {
 };
 
 const getAchievs = async (token: string, ids: number[]) => {
-  const url =
-    "https://api.guildwars2.com/v2/account/achievements?access_token=";
-  const fullUrl = `${url}${token}&ids=${ids.join(",")}`;
+  const url = "https://api.guildwars2.com/v2/account/achievements";
+  const fullUrl = `${url}?access_token=${token}&ids=${ids.join(",")}`;
   return fetch(fullUrl).then((res) => res.json());
 };
 
+const stringToColor = (string: string, saturation = 100, lightness = 75) => {
+  let hash = 0;
+  for (let i = 0; i < string.length; i++) {
+    hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    hash = hash & hash;
+  }
+  return `hsl(${hash % 360}, ${saturation}%, ${lightness}%)`;
+};
 export const updateUser = async (token: string, ids: number[]) => {
   const uri = `https://api.guildwars2.com/v2/account?access_token=${token}`;
-  const api = await fetch(uri, {
+  const api: UserAttributes = await fetch(uri, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -35,6 +42,9 @@ export const updateUser = async (token: string, ids: number[]) => {
     .then((res) => ({
       name: res.name,
       token: token,
+      color: stringToColor(res.name),
+      dailyAchievementPoints: res.daily_ap,
+      monthlyAchievementPoints: res.monthly_ap,
     }));
 
   await User.upsert(api);

@@ -1,19 +1,16 @@
+import { acceptHMRUpdate, defineStore } from "pinia";
+
 import {
-  AchievementAttributes,
+  AchievementOuput,
   GroupAttributes,
   UserAttributes,
 } from "../../utils/type";
-import { acceptHMRUpdate, defineStore } from "pinia";
-
-import _apiAchievements from "../jsonData/achiev.json";
-import _apiArwy from "../jsonData/arwyAchiev.json";
-import _apiJapyx from "../jsonData/japyxAchiev.json";
 
 export const useAchievementsStore = defineStore({
   id: "achievements",
   state: () => ({
     groups: [] as GroupAttributes[],
-    achievements: [] as AchievementAttributes[],
+    achievements: [] as AchievementOuput[],
     users: [] as UserAttributes[],
   }),
 

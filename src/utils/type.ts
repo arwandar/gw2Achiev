@@ -18,6 +18,7 @@ export interface AchievementAttributes {
   requirement: string;
   categorieId?: number;
   userAchievements?: UserAchievementAttributes[];
+  raw: string;
 }
 export interface AchievementInput {}
 export interface AchievementOuput extends Required<AchievementAttributes> {}
@@ -77,6 +78,9 @@ export interface GroupOuput extends Required<GroupAttributes> {}
 export interface UserAttributes {
   name: string;
   token: string;
+  color: string;
+  dailyAchievementPoints?: number;
+  monthlyAchievementPoints?: number;
 }
 export interface UserInput {}
 export interface UserOuput extends Required<UserAttributes> {}

@@ -24,7 +24,8 @@ export const updateAchievs = async () => {
 };
 
 const getAchievs = async (ids: number[]) => {
-  const uri = `https://api.guildwars2.com/v2/achievements?ids=${ids.join(",")}`;
+  const idsStr = ids.join(",");
+  const uri = `https://api.guildwars2.com/v2/achievements?lang=fr&ids=${idsStr}`;
   const res = await fetch(uri).then((res) => res.json());
   return res;
 };

@@ -11,7 +11,7 @@ onMounted(() => {
   achievStore.init();
 });
 
-const filter = ref<"arwy" | "japyx" | "nobody" | "all">("all");
+const filter = ref<"nobody" | "all" | string>("all");
 </script>
 
 <template>
@@ -29,7 +29,7 @@ const filter = ref<"arwy" | "japyx" | "nobody" | "all">("all");
 <style scoped>
 .container {
   display: grid;
-  grid-template-columns: 20% 1fr;
+  grid-template-columns: 30% 1fr;
   grid-template-rows: max-content 1fr;
   gap: 0;
   grid-auto-flow: row;

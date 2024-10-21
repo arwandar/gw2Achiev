@@ -1,8 +1,8 @@
-import { AchievementAttributes, AchievementInput } from "../../utils/type";
 import { DataTypes, Model } from "sequelize";
 
-import Categorie from "./Categorie.model";
+import { AchievementAttributes, AchievementInput } from "../../utils/type";
 import sequelize from "../sequelize";
+import Categorie from "./Categorie.model";
 
 class Achievement
   extends Model<AchievementAttributes, AchievementInput>
@@ -13,6 +13,7 @@ class Achievement
   declare description: string;
   declare requirement: string;
   declare categorieId: number;
+  declare raw: string;
 }
 
 Achievement.init(
@@ -31,6 +32,7 @@ Achievement.init(
         key: "id",
       },
     },
+    raw: DataTypes.TEXT,
   },
   { sequelize, name: { singular: "achievement", plural: "achievements" } }
 );

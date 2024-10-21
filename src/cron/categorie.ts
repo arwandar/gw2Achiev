@@ -1,7 +1,7 @@
 import { addCategorie } from "../db/utils";
 
 export const getIds = async () => {
-  const uri = `https://api.guildwars2.com/v2/achievements/categories`;
+  const uri = `https://api.guildwars2.com/v2/achievements/categories?lang=fr`;
   const res = await fetch(uri).then((res) => res.json());
   return res;
 };
